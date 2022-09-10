@@ -15,14 +15,19 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('home'),
+        backgroundColor: Colors.deepOrange,
+        title: const Text('Home'),
       ),
       body: Center(
-        child: ElevatedButton(
-          child: Text('logout'),
-          onPressed: (){
-            AuthService.removeUser(context);
-          },
+        child: Container(
+          width: 130,
+          color: Colors.deepOrange,
+          child: TextButton(
+            child: const Text('Log Out', style: TextStyle(color: Colors.white),),
+            onPressed: (){
+              AuthService.removeUser(context);
+            },
+          ),
         ),
       ),
     );

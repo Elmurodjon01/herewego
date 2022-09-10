@@ -20,9 +20,6 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign in Page'),
-      ),
       body: Stack(
         children: [
           Container(
@@ -47,7 +44,7 @@ class _SignInPageState extends State<SignInPage> {
                 GestureDetector(
                   onTap: _doSignin,
                   child: Container(
-                    color: Colors.blue,
+                    color: Colors.red,
                     width: double.infinity,
                     height: 45,
                     child: const Center(
@@ -65,8 +62,8 @@ class _SignInPageState extends State<SignInPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: const [
-                        Text('Don\'t have an account? '),
-                        Text('Sign Up'),
+                        Text('Don\'t have an account? ', style: TextStyle(color: Colors.black),),
+                        Text('Sign Up', style: TextStyle(color: Colors.black),),
                       ],
                     ),
                   ),
@@ -74,9 +71,9 @@ class _SignInPageState extends State<SignInPage> {
               ],
             ),
           ),
-          isLoading?  Center(
+          isLoading?  const Center(
             child: CircularProgressIndicator(),
-          ): SizedBox.shrink(),
+          ): const SizedBox.shrink(),
         ],
       ),
     );
@@ -85,19 +82,19 @@ class _SignInPageState extends State<SignInPage> {
     String email = _emailController.text.toString().trim();
     String password = _passwordController.text.toString().trim();
     if (email.isEmpty || password.isEmpty) return;
-    AuthService.signinUser(context, email, password).then((user) => {
-      _getFireBaseUser(user!),
+    AuthService.signinUser(context, email, password).then((firebaseUser) => {
+      _getFireBaseUser(firebaseUser),
     });
     setState(() {
       isLoading = true;
     });
   }
-  _getFireBaseUser(User user)async {
+  _getFireBaseUser(User? firebaseUser)async {
     setState(() {
       isLoading = false;
     });
-    if(user != null){
-      await Prefs.saveUserId(user.uid);
+    if(firebaseUser != null){
+      await Prefs.saveUserId(firebaseUser.uid);
       Navigator.pushReplacementNamed(context, MainPage.id);
     } else{
       Utils.fireToast('Check your email or password once again!');
